@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Grasping multiple objects simultaneously in one robotic hand.">
+  <meta name="keywords" content="Dexterous Grasping, Multi-Object Grasping, Robotics">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MultiGrasp</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://yuyangli.com">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            More Our Research
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://sites.google.com/view/gendexgrasp/home">
+              GenDexGrasp
+            </a>
+            <a class="navbar-item" href="https://sites.google.com/view/ral2021-grasp/home">
+              Differentiable Force Closure
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <img src="static\images\favicon.svg" width="10%">
+            <h1 class="title is-1 publication-title">Grasp Multiple Objects with One Hand</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://yuyangli.com">Yuyang Li</a><sup>1,2,3</sup>,</span>
+              <span class="author-block"><a href="https://benjamin-eecs.github.io">Bo Liu</a><sup>3</sup>,</span>
+              <span class="author-block"><a href="https://gengyiran.github.io">Yiran Geng</a><sup>4</sup>,</span>
+              <span class="author-block"><a href="https://xiaoyao-li.github.io">Puhao Li</a><sup>1,2</sup>,</span>
+              <span class="author-block"><a href="https://www.yangyaodong.com">Yaodong Yang</a><sup>1,3</sup>,</span>
+              <span class="author-block"><a href="https://yzhu.io">Yixin Zhu</a><sup>3</sup>,</span>
+              <span class="author-block"><a href="https://tengyu.ai">Tengyu Liu</a><sup>1,&#8224;</sup>,</span>
+              <span class="author-block"><a href="https://siyuanhuang.com">Siyuan Huang</a><sup>1,&#8224;</sup>,</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>National Key Laboratory of General Artificial Intelligence,
+                BIGAI</span>
+              <br />
+              <span class="author-block"><sup>2</sup>Dept. of Automation, THU</span>
+              <span class="author-block"><sup>3</sup>Institute for AI, PKU</span>
+              <span class="author-block"><sup>4</sup>School of EECS, PKU</span>
+              <br />
+              <span class="author-block"><sup>&#8224;</sup>Corresponding Author</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://assets.yuyangli.com/Academic/ICRA24_Grasp/MultiGrasp.Submission.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2310.15599" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <!-- <span class="link-block">
+                  <a href="https://www.youtube.com/watch?v=xxxx"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span> -->
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/MultiGrasp/MultiGrasp"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <span class="link-block">
+                  <a href="https://multigrasp.github.io"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="far fa-images"></i>
+                    </span>
+                    <span>Dataset (Coming Soon)</span>
+                    <!-- <span>Dataset (Grasp 'Em)</span> -->
+                  </a>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="static\images\teaser\Teaser.png" alt="Teaser" width="100%">
+        <h2 class="subtitle has-text-centered">
+          Shadow Hand driven by our framework catches multiple Pokémons simultaneously.
+        </h2>
+        <div class="content has-text-justified">
+          <p>
+            The human hand's complex kinematics allow for simultaneous grasping and manipulation of multiple objects,
+            essential for tasks like object transfer and in-hand manipulation. Despite its importance, robotic
+            multi-object grasping remains underexplored and presents challenges in kinematics, dynamics, and object
+            configurations. This paper introduces MultiGrasp, a two-stage method for multi-object grasping on a
+            tabletop with a multi-finger dexterous hand. It involves (i) generating pre-grasp proposals and (ii)
+            executing the grasp and lifting the objects. Experimental results primarily focus on dual-object grasping
+            and report a 44.13% success rate, showcasing adaptability to unseen object configurations and imprecise
+            grasps. The framework also demonstrates the capability to grasp more than two objects, albeit at a reduced
+            inference speed.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-hr">
+    <hr>
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Pipeline of MultiGrasp</h2>
+          <img src="static\images\pipeline\Pipeline.jpg" alt="Pipeline" width="100%">
+          <div class="content has-text-justified">
+            <p>
+              We generate a pre-grasp pose with either the augmented Differentiable Force Closure (DFC) (A) or a diffusion
+              model (B), then execute the grasp
+              with a planned reaching trajectory (C) and learned lifting policy (D). We further distill the policy to a
+              vision-based
+              student for real-world scenarios (E).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-hr">
+    <hr>
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Grasp 'Em: A Large-Scale Multi-Object Grasping Dataset</h2>
+          <div class="content has-text-justified">
+            <p>
+              MultiGrasp released a large-scale dataset of multi-object grasping with a Shadow Hand that includes
+              approximately 90k grasps for 8 different objects (73.7k double-object grasps, and 16.4k single-object
+              grasps).
+            </p>
+          </div>
+          <table>
+            <tr>
+              <td><img src="static/images/1_GraspEm-Renders/bulb+bulb-1/0a3294c9-ff3f-4869-a9c0-3b4c2a0a71be.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/bulb+camera-0/7db55a10-6dd9-4a3b-8916-757c7a4dcda0.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/bulb+cube-0/1bb75147-84e7-4f68-9fb5-bfcbc6e40368.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/knob+knob-0/87c60879-749c-41a4-9934-049c39a421b9.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/duck+knob-2/1cace011-4b8d-4d42-8321-354dcedc54c9.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/knob+pear-1/f680631c-8e67-41aa-ac85-9097d9ae8a43.png"></td>
+            </tr>
+            <tr>
+              <td align="center">bulb+bulb</td>
+              <td align="center">bulb+camera</td>
+              <td align="center">bulb+cube</td>
+              <td align="center">knob+knob</td>
+              <td align="center">knob+duck</td>
+              <td align="center">knob+pear</td>
+            </tr>
+
+            <tr>
+              <td><img src="static/images/1_GraspEm-Renders/bulb+camera-3/46dc0052-5bdd-4aba-aa2a-a9c9d6b23f6b.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/camera+camera-0/08040c4e-475e-4766-a5b0-ca30fb015135.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/camera+cube-0/bcd59b9b-9761-4f59-bcd3-2b60b24b25ca.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/duck+knob-0/7b385090-048d-49d8-aef6-846a8ac33441.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/duck+duck-3/aa113179-2857-400a-a180-4e39c1534517.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/duck+pear-0/bdcfe471-8bf7-4d5e-b37d-e4cef640a6e4.png"></td>
+            </tr>
+            <tr>
+              <td align="center">camera+bulb</td>
+              <td align="center">camera+camera</td>
+              <td align="center">camera+cube</td>
+              <td align="center">duck+knob</td>
+              <td align="center">duck+duck</td>
+              <td align="center">duck+pear</td>
+            </tr>
+
+            <tr>
+              <td><img src="static/images/1_GraspEm-Renders/bulb+cube-3/b2a9ec7b-572b-412a-a1c5-ecf774abc3cb.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/camera+cube-3/e3d5ed8c-0bd3-4c31-a2b1-c9649c28f31d.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/cube+cube-0/a910dafb-5793-402a-9e2e-07778d3dff12.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/knob+pear-3/1b31a767-aa08-4a99-8c96-d7887b2d4c34.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/duck+pear-3/2c700b69-d10a-4d0a-a744-047ed51c8561.png"></td>
+              <td><img src="static/images/1_GraspEm-Renders/pear+pear-3/20157c7d-4ede-4f06-b559-9fbc0aedfce8.png"></td>
+            </tr>
+            <tr>
+              <td align="center">cube+bulb</td>
+              <td align="center">cube+camera</td>
+              <td align="center">cube+cube</td>
+              <td align="center">pear+knob</td>
+              <td align="center">pear+duck</td>
+              <td align="center">pear+pear</td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-hr">
+    <hr>
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Executing Multi-Object Grasps with a Two-Stage Policy</h2>
+          <div class="content has-text-justified">
+            <p>
+              MultiGrasp executed with an optimization-based motion plan to guide the hand to the pre-grasp pose,
+              followed by an RL policy for lifting the objects.
+            </p>
+          </div>
+          <table>
+
+            <tr>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/bulb+camera_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/camera+knob_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/cube+cylinder_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">bulb+camera</td>
+              <td align="center">camera+knob</td>
+              <td align="center">cube+cylinder</td>
+            </tr>
+
+            <tr>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/duck+knob_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/cylinder+duck_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/2_Specialist.Executions/bulb+bulb_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">duck+knob</td>
+              <td align="center">cylinder+duck</td>
+              <td align="center">bulb+bulb</td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-hr">
+    <hr>
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Scalability to More Objects</h2>
+          <div class="content has-text-justified">
+            <p>
+              MultiGrasp can generalize to grasping more objects. We showcase the execution trajectories of multiple
+              cylinders, with their amount ranging from 3 to 5.
+            </p>
+          </div>
+          <table>
+            <tr>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/3_More.Objects-Static.Cam/exe_more-3_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/3_More.Objects-Static.Cam/exe_more-4_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+              <td>
+                <video width="320" height="240" controls>
+                  <source src="static/videos/3_More.Objects-Static.Cam/exe_more-5_compressed.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">3 Objects</td>
+              <td align="center">4 Objects</td>
+              <td align="center">5 Objects</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="my-hr">
+    <hr>
+  </div>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Real Robot Experiments</h2>
+          <div class="content has-text-justified">
+            <p>
+              MultiGrasp generates grasp trajectories that are plausible to execute on a real Shadow Hand robot.
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <video width="640" height="480" controls>
+              <source src="static/videos/4_Real.Robot/Back.4x_compressed.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <br />
+            Real Robot Grasp Execution with a Real Shadow Hand Robot
+          </div>
+        </div>
+      </div>
+  </section>
+
+<!-- 
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{li2023multigrasp,
+    author = {Li, Yuyang and Liu, Bo and Geng, Yiran and Li, Puhao and Yang, Yaodong and Zhu, Yixin and Liu, Tengyu and
+    Huang, Siyuan},
+    title = {Grasp Multiple Objects with One Hand},
+    journal = {},
+    year = {2023},
+    }</code></pre>
+    </div>
+  </section> -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              Template borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
